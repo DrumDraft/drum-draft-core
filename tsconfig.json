@@ -14,9 +14,6 @@
       "@/*": [
         "src/*"
       ],
-      "@prisma/client": [
-        "src/@generated/prisma/client"
-      ]
     },
     "incremental": true,
     "skipLibCheck": true,

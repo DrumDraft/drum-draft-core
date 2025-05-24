@@ -1,12 +1,16 @@
+import { PasswordService } from '@/auth/password.service';
 import { PrismaService } from '@/database/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User, UserType } from '@prisma/client';
+import { User } from 'generated/prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private passwordService: PasswordService,
+  ) {}
 
   async findAll(): Promise<User[]> {
     return this.prisma.user.findMany();
@@ -18,34 +22,40 @@ export class UserService {
     });
 
     if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+      throw new NotFoundException(`Пользователь с id ${id} не найден`);
     }
 
     return user;
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { email },
     });
+
+    return user;
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const { email, password, name, type = UserType.USER } = createUserDto;
+    const { email, password, name } = createUserDto;
+
+    const hashedPassword = await this.passwordService.hashPassword(password);
 
     return this.prisma.user.create({
       data: {
         email,
-        password, // В реальном приложении здесь должна быть хеширование пароля
+        password: hashedPassword,
         name,
-        type,
       },
     });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    // Проверяем, существует ли пользователь
     await this.findOne(id);
+
+    if (updateUserDto.password) {
+      updateUserDto.password = await this.passwordService.hashPassword(updateUserDto.password);
+    }
 
     return this.prisma.user.update({
       where: { id },
@@ -54,7 +64,6 @@ export class UserService {
   }
 
   async remove(id: number): Promise<User> {
-    // Проверяем, существует ли пользователь
     await this.findOne(id);
 
     return this.prisma.user.delete({

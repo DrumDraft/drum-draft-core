@@ -19,7 +19,7 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ['./tsconfig.json'], // ключевой момент!
+        project: ['./tsconfig.json'],
         tsconfigRootDir: __dirname,
         sourceType: 'module',
         ecmaVersion: 2020,
@@ -28,19 +28,25 @@ export default [
     plugins: {
       '@typescript-eslint': tsPlugin,
     },
-    // 3) Подключаем recommended-наборы из плагина
     ...compat.extends(
       'plugin:@typescript-eslint/recommended',
       'plugin:@typescript-eslint/recommended-requiring-type-checking',
     ),
     rules: {
       // здесь можно переопределить или выключить правило
-      // '@typescript-eslint/no-unsafe-call': 'off',
       'prettier/prettier': 'off',
+      'import/newline-after-import': ['error', { count: 1 }],
+      'max-len': [
+        'error',
+        {
+          code: 100,
+          ignoreImports: false,
+        },
+      ],
     },
     settings: {
       'import/resolver': {
-        typescript: {}, // чтобы import-схемы работали корректно
+        typescript: {},
       },
     },
   },

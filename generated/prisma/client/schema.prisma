@@ -1,0 +1,126 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma/client"
+  binaryTargets = ["native", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SignatureMeasure {
+  ONE        @map("1")
+  TWO        @map("2")
+  FOUR       @map("4")
+  EIGHT      @map("8")
+  SIXTEEN    @map("16")
+  THIRTY_TWO @map("32")
+}
+
+// Таблица пользователей
+model User {
+  id        Int              @id @default(autoincrement())
+  email     String           @unique @db.VarChar(320)
+  password  String           @db.VarChar(128)
+  name      String           @db.VarChar(35)
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  isActive  Boolean          @default(true) @map("is_active")
+  library   PatternLibrary[]
+  drafts    Draft[]
+
+  @@map("users")
+}
+
+// Таблица тегов
+model Tag {
+  id        Int          @id @default(autoincrement())
+  name      String       @unique @db.VarChar(50)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  patterns  PatternTag[]
+
+  @@map("tags")
+}
+
+// Таблица шаблонов ритмов
+model Pattern {
+  id               Int                @id @default(autoincrement())
+  signatureBits    Int                @default(4) @map("signature_bits") @db.SmallInt
+  signatureMeasure SignatureMeasure   @default(FOUR) @map("signature_measure")
+  beats            Json               @default("[]")
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime           @default(now()) @map("updated_at") @db.Timestamptz
+  tags             PatternTag[]
+  draftsPatterns   DraftPattern[]
+  library          PatternLibrary[]
+  searchData       PatternSearchData?
+
+  @@index([beats], type: Gin)
+  @@map("patterns")
+}
+
+// Связующая таблица pattern_tag
+model PatternTag {
+  patternId Int     @map("pattern_id")
+  tagId     Int     @map("tag_id")
+  pattern   Pattern @relation(fields: [patternId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([patternId, tagId])
+  @@map("patterns_tags")
+}
+
+// Таблица библиотеки паттернов
+model PatternLibrary {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @map("user_id")
+  patternId Int     @map("pattern_id")
+  isPublic  Boolean @default(false) @map("is_public")
+  title     String  @db.Text
+  user      User    @relation(fields: [userId], references: [id], onDelete: Restrict)
+  pattern   Pattern @relation(fields: [patternId], references: [id], onDelete: Cascade)
+
+  @@map("patterns_libraries")
+}
+
+// Таблица черновиков
+model Draft {
+  id          Int            @id @default(autoincrement())
+  userId      Int            @map("user_id")
+  title       String         @db.VarChar(100)
+  description String?        @db.Text
+  structure   Json
+  isPublic    Boolean        @default(false) @map("is_public")
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime       @default(now()) @map("updated_at") @db.Timestamptz
+  user        User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  patterns    DraftPattern[]
+
+  @@index([structure], type: Gin)
+  @@map("drafts")
+}
+
+// Связующая таблица drafts_patterns (переименована из pattern_samples)
+model DraftPattern {
+  id        Int     @id @default(autoincrement())
+  draftId   Int     @map("draft_id")
+  patternId Int     @map("pattern_id")
+  code      String  @db.VarChar(2)
+  color     String  @db.VarChar(7)
+  draft     Draft   @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  pattern   Pattern @relation(fields: [patternId], references: [id], onDelete: Cascade)
+
+  @@unique([draftId, code])
+  @@map("drafts_patterns")
+}
+
+// Таблица данных поиска
+model PatternSearchData {
+  patternId      Int     @id @map("pattern_id")
+  grooveVector   Float[] @map("groove_vector")
+  hyperplaneHash Int[]   @map("hyperplane_hash")
+  pattern        Pattern @relation(fields: [patternId], references: [id], onDelete: Cascade)
+
+  @@index([hyperplaneHash], type: Hash)
+  @@map("pattern_search_data")
+}

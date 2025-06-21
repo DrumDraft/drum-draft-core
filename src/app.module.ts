@@ -7,6 +7,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LibraryModule } from './library/library.module';
 import { PatternsModule } from './patterns/patterns.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PatternsModule } from './patterns/patterns.module';
     AuthModule,
     PatternsModule,
     LibraryModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],

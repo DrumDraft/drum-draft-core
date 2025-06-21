@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreatePatternDto, UpdatePatternDto } from './dto';
 import { PatternsService } from './patterns.service';
 
@@ -17,12 +26,12 @@ export class PatternsController {
   }
 
   @Patch(':id')
-  update(@Param('id') patternId: string, @Body() dto: UpdatePatternDto) {
-    return this.patternsService.update(parseInt(patternId), dto);
+  update(@Param('id', ParseIntPipe) patternId: number, @Body() dto: UpdatePatternDto) {
+    return this.patternsService.update(patternId, dto);
   }
 
   @Delete(':id')
-  delete(@Param('id') patternId: string) {
-    return this.patternsService.delete(parseInt(patternId));
+  delete(@Param('id', ParseIntPipe) patternId: number) {
+    return this.patternsService.delete(patternId);
   }
 }

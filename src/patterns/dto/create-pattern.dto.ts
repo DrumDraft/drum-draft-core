@@ -1,5 +1,4 @@
-import { IsArray, IsNumber, IsOptional } from 'class-validator';
-import { SignatureMeasure } from '../../../generated/prisma/client';
+import { IsArray, IsIn, IsNumber, IsOptional } from 'class-validator';
 import { Beat } from '../types/beat';
 
 export class CreatePatternDto {
@@ -7,7 +6,8 @@ export class CreatePatternDto {
   signatureBits: number;
 
   @IsNumber()
-  signatureMeasure: SignatureMeasure;
+  @IsIn([4, 8])
+  signatureMeasure: number;
 
   @IsArray()
   beats: Beat[];

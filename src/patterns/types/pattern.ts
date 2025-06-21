@@ -1,13 +1,11 @@
-import { SignatureMeasure } from '../../../generated/prisma/client/index.d';
 import { Beat } from './beat';
 
 export interface Pattern {
-  id: string;
+  id: number;
   signatureBits: number;
-  signatureMeasure: SignatureMeasure;
+  signatureMeasure: number;
   beats: Beat[];
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
-  userId: string;
 }

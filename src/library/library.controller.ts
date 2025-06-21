@@ -1,10 +1,20 @@
 import { CurrentUserId } from '@/auth/decorators/current-user-id.decorator';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateLibraryPatternDto, UpdateLibraryPatternDto } from './dto';
 import { LibraryService } from './library.service';
 
-@Controller('library')
+@Controller('library/patterns')
 @UseGuards(JwtAuthGuard)
 export class LibraryController {
   constructor(private readonly libraryService: LibraryService) {}
@@ -14,34 +24,32 @@ export class LibraryController {
     return this.libraryService.create(dto, userId);
   }
 
-  @Post('pattern/new')
+  @Post('new')
   createEmpty(@CurrentUserId() userId: number) {
     return this.libraryService.createEmpty(userId);
   }
 
   @Get()
   findAll(@CurrentUserId() userId: number) {
-    console.log('userId', userId);
-
     return this.libraryService.findAllByUser(userId);
   }
 
   @Get(':id')
-  findOne(@Param('id') patternId: string, @CurrentUserId() userId: number) {
-    return this.libraryService.findOneByUser(parseInt(patternId), userId);
+  findOne(@Param('id', ParseIntPipe) patternId: number, @CurrentUserId() userId: number) {
+    return this.libraryService.findOneByUser(patternId, userId);
   }
 
   @Patch(':id')
   update(
-    @Param('id') patternId: string,
+    @Param('id', ParseIntPipe) patternId: number,
     @Body() dto: UpdateLibraryPatternDto,
     @CurrentUserId() userId: number,
   ) {
-    return this.libraryService.update(parseInt(patternId), dto, userId);
+    return this.libraryService.update(patternId, dto, userId);
   }
 
   @Delete(':id')
-  delete(@Param('id') patternId: string, @CurrentUserId() userId: number) {
-    return this.libraryService.delete(parseInt(patternId), userId);
+  delete(@Param('id', ParseIntPipe) patternId: number, @CurrentUserId() userId: number) {
+    return this.libraryService.delete(patternId, userId);
   }
 }

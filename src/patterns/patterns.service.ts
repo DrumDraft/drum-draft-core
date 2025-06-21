@@ -1,4 +1,5 @@
 import { PrismaService } from '@/database/prisma.service';
+import { SearchService } from '@/search/search.service';
 import { TagsService } from '@/tags/tags.service';
 import { Injectable } from '@nestjs/common';
 import { JsonArray } from 'generated/prisma/client/runtime/library';
@@ -9,6 +10,7 @@ export class PatternsService {
   constructor(
     private prisma: PrismaService,
     private tagsService: TagsService,
+    private searchService: SearchService,
   ) {}
 
   async create(
@@ -57,11 +59,19 @@ export class PatternsService {
       });
     }
 
+    // Индексируем паттерн для поиска
+    try {
+      await this.searchService.indexPattern(pattern.id);
+    } catch (error) {
+      // Логируем ошибку, но не прерываем создание паттерна
+      console.error(`Failed to index pattern ${pattern.id}:`, error);
+    }
+
     return this.prisma.pattern.findUnique({
       where: { id: pattern.id },
       include: {
         tags: true,
-        library: true,
+        libraryPatterns: true,
       },
     });
   }
@@ -108,6 +118,13 @@ export class PatternsService {
           },
         },
       });
+    }
+
+    // Обновляем индекс паттерна
+    try {
+      await this.searchService.indexPattern(pattern.id);
+    } catch (error) {
+      console.error(`Failed to reindex pattern ${pattern.id}:`, error);
     }
 
     return this.prisma.pattern.findUnique({

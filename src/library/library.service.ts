@@ -1,8 +1,12 @@
 import { PrismaService } from '@/database/prisma.service';
 import { PatternsService } from '@/patterns/patterns.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { SignatureMeasure } from 'generated/prisma/client';
-import { CreateLibraryPatternDto, UpdateLibraryPatternDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import {
+  CreateLibraryPatternDto,
+  LibraryPatternDto,
+  UpdateLibraryPatternDto,
+} from './dto';
 
 @Injectable()
 export class LibraryService {
@@ -12,7 +16,8 @@ export class LibraryService {
   ) {}
 
   async create(dto: CreateLibraryPatternDto, userId: number) {
-    return this.patternService.create(
+    // Создаем паттерн через сервис паттернов
+    const createdPattern = await this.patternService.create(
       {
         signatureBits: dto.signatureBits,
         signatureMeasure: dto.signatureMeasure,
@@ -27,13 +32,57 @@ export class LibraryService {
         },
       },
     );
+
+    // Получаем созданный паттерн в нужном формате
+    const libraryPattern = await this.prisma.libraryPattern.findFirst({
+      where: {
+        userId,
+        patternId: createdPattern.id,
+      },
+      select: {
+        id: true,
+        title: true,
+        isPublic: true,
+        pattern: {
+          select: {
+            id: true,
+            signatureBits: true,
+            signatureMeasure: true,
+            beats: true,
+            createdAt: true,
+            updatedAt: true,
+            tags: {
+              select: {
+                tag: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!libraryPattern) {
+      throw new NotFoundException('Created pattern not found');
+    }
+
+    return plainToInstance(LibraryPatternDto, {
+      ...libraryPattern,
+      pattern: {
+        ...libraryPattern.pattern,
+        tags: libraryPattern.pattern.tags.map((t) => t.tag.name),
+      },
+    });
   }
 
   async createEmpty(userId: number) {
     return this.create(
       {
         signatureBits: 4,
-        signatureMeasure: SignatureMeasure.FOUR,
+        signatureMeasure: 4,
         beats: [],
         tags: [],
         title: 'Без названия',
@@ -43,58 +92,133 @@ export class LibraryService {
   }
 
   async findAllByUser(userId: number) {
-    return this.prisma.libraryPattern.findMany({
+    const libraryPatterns = await this.prisma.libraryPattern.findMany({
       where: {
         userId: userId,
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        isPublic: true,
         pattern: {
-          include: {
-            tags: true,
+          select: {
+            id: true,
+            signatureBits: true,
+            signatureMeasure: true,
+            beats: true,
+            createdAt: true,
+            updatedAt: true,
+            tags: {
+              select: {
+                tag: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
     });
+
+    return libraryPatterns.map((libraryPattern) =>
+      plainToInstance(LibraryPatternDto, {
+        ...libraryPattern,
+        pattern: {
+          ...libraryPattern.pattern,
+          tags: libraryPattern.pattern.tags.map((t) => t.tag.name),
+        },
+      }),
+    );
   }
 
   async findOneByUser(patternId: number, userId: number) {
-    const libraryPattern = await this.prisma.libraryPattern.findFirst({
+    const lp = await this.prisma.libraryPattern.findFirst({
       where: {
-        patternId,
         userId,
+        patternId,
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        isPublic: true,
         pattern: {
-          include: {
-            tags: true,
+          select: {
+            id: true,
+            signatureBits: true,
+            signatureMeasure: true,
+            beats: true,
+            createdAt: true,
+            updatedAt: true,
+            tags: {
+              select: {
+                tag: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
     });
 
-    if (!libraryPattern) {
-      throw new NotFoundException('Паттерн не найден в вашей библиотеке');
+    if (!lp) {
+      throw new NotFoundException('Pattern not found');
     }
 
-    return libraryPattern;
+    return plainToInstance(LibraryPatternDto, {
+      ...lp,
+      pattern: {
+        ...lp.pattern,
+        tags: lp.pattern.tags.map((t) => t.tag.name),
+      },
+    });
   }
 
   async update(patternId: number, dto: UpdateLibraryPatternDto, userId: number) {
     const libraryPattern = await this.findOneByUser(patternId, userId);
 
-    return this.prisma.libraryPattern.update({
+    const updated = await this.prisma.libraryPattern.update({
       where: {
         id: libraryPattern.id,
       },
       data: {
         title: dto.title,
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        isPublic: true,
         pattern: {
-          include: {
-            tags: true,
+          select: {
+            id: true,
+            signatureBits: true,
+            signatureMeasure: true,
+            beats: true,
+            createdAt: true,
+            updatedAt: true,
+            tags: {
+              select: {
+                tag: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
           },
         },
+      },
+    });
+
+    return plainToInstance(LibraryPatternDto, {
+      ...updated,
+      pattern: {
+        ...updated.pattern,
+        tags: updated.pattern.tags.map((t) => t.tag.name),
       },
     });
   }

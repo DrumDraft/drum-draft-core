@@ -55,27 +55,6 @@ export type DraftPattern = $Result.DefaultSelection<Prisma.$DraftPatternPayload>
 export type PatternSearchData = $Result.DefaultSelection<Prisma.$PatternSearchDataPayload>
 
 /**
- * Enums
- */
-export namespace $Enums {
-  export const SignatureMeasure: {
-  ONE: 'ONE',
-  TWO: 'TWO',
-  FOUR: 'FOUR',
-  EIGHT: 'EIGHT',
-  SIXTEEN: 'SIXTEEN',
-  THIRTY_TWO: 'THIRTY_TWO'
-};
-
-export type SignatureMeasure = (typeof SignatureMeasure)[keyof typeof SignatureMeasure]
-
-}
-
-export type SignatureMeasure = $Enums.SignatureMeasure
-
-export const SignatureMeasure: typeof $Enums.SignatureMeasure
-
-/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -1527,12 +1506,12 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    library: number
+    libraryPatterns: number
     drafts: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    library?: boolean | UserCountOutputTypeCountLibraryArgs
+    libraryPatterns?: boolean | UserCountOutputTypeCountLibraryPatternsArgs
     drafts?: boolean | UserCountOutputTypeCountDraftsArgs
   }
 
@@ -1550,7 +1529,7 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountLibraryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountLibraryPatternsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LibraryPatternWhereInput
   }
 
@@ -1600,13 +1579,13 @@ export namespace Prisma {
   export type PatternCountOutputType = {
     tags: number
     draftsPatterns: number
-    library: number
+    libraryPatterns: number
   }
 
   export type PatternCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tags?: boolean | PatternCountOutputTypeCountTagsArgs
     draftsPatterns?: boolean | PatternCountOutputTypeCountDraftsPatternsArgs
-    library?: boolean | PatternCountOutputTypeCountLibraryArgs
+    libraryPatterns?: boolean | PatternCountOutputTypeCountLibraryPatternsArgs
   }
 
   // Custom InputTypes
@@ -1637,7 +1616,7 @@ export namespace Prisma {
   /**
    * PatternCountOutputType without action
    */
-  export type PatternCountOutputTypeCountLibraryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PatternCountOutputTypeCountLibraryPatternsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LibraryPatternWhereInput
   }
 
@@ -1883,7 +1862,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     isActive?: boolean
-    library?: boolean | User$libraryArgs<ExtArgs>
+    libraryPatterns?: boolean | User$libraryPatternsArgs<ExtArgs>
     drafts?: boolean | User$draftsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1917,7 +1896,7 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "createdAt" | "isActive", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    library?: boolean | User$libraryArgs<ExtArgs>
+    libraryPatterns?: boolean | User$libraryPatternsArgs<ExtArgs>
     drafts?: boolean | User$draftsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1927,7 +1906,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      library: Prisma.$LibraryPatternPayload<ExtArgs>[]
+      libraryPatterns: Prisma.$LibraryPatternPayload<ExtArgs>[]
       drafts: Prisma.$DraftPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2331,7 +2310,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    library<T extends User$libraryArgs<ExtArgs> = {}>(args?: Subset<T, User$libraryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryPatternPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    libraryPatterns<T extends User$libraryPatternsArgs<ExtArgs> = {}>(args?: Subset<T, User$libraryPatternsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryPatternPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     drafts<T extends User$draftsArgs<ExtArgs> = {}>(args?: Subset<T, User$draftsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2756,9 +2735,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.library
+   * User.libraryPatterns
    */
-  export type User$libraryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$libraryPatternsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the LibraryPattern
      */
@@ -3915,17 +3894,19 @@ export namespace Prisma {
   export type PatternAvgAggregateOutputType = {
     id: number | null
     signatureBits: number | null
+    signatureMeasure: number | null
   }
 
   export type PatternSumAggregateOutputType = {
     id: number | null
     signatureBits: number | null
+    signatureMeasure: number | null
   }
 
   export type PatternMinAggregateOutputType = {
     id: number | null
     signatureBits: number | null
-    signatureMeasure: $Enums.SignatureMeasure | null
+    signatureMeasure: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3933,7 +3914,7 @@ export namespace Prisma {
   export type PatternMaxAggregateOutputType = {
     id: number | null
     signatureBits: number | null
-    signatureMeasure: $Enums.SignatureMeasure | null
+    signatureMeasure: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3952,11 +3933,13 @@ export namespace Prisma {
   export type PatternAvgAggregateInputType = {
     id?: true
     signatureBits?: true
+    signatureMeasure?: true
   }
 
   export type PatternSumAggregateInputType = {
     id?: true
     signatureBits?: true
+    signatureMeasure?: true
   }
 
   export type PatternMinAggregateInputType = {
@@ -4074,7 +4057,7 @@ export namespace Prisma {
   export type PatternGroupByOutputType = {
     id: number
     signatureBits: number
-    signatureMeasure: $Enums.SignatureMeasure
+    signatureMeasure: number
     beats: JsonValue
     createdAt: Date
     updatedAt: Date
@@ -4108,7 +4091,7 @@ export namespace Prisma {
     updatedAt?: boolean
     tags?: boolean | Pattern$tagsArgs<ExtArgs>
     draftsPatterns?: boolean | Pattern$draftsPatternsArgs<ExtArgs>
-    library?: boolean | Pattern$libraryArgs<ExtArgs>
+    libraryPatterns?: boolean | Pattern$libraryPatternsArgs<ExtArgs>
     searchData?: boolean | Pattern$searchDataArgs<ExtArgs>
     _count?: boolean | PatternCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pattern"]>
@@ -4144,7 +4127,7 @@ export namespace Prisma {
   export type PatternInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tags?: boolean | Pattern$tagsArgs<ExtArgs>
     draftsPatterns?: boolean | Pattern$draftsPatternsArgs<ExtArgs>
-    library?: boolean | Pattern$libraryArgs<ExtArgs>
+    libraryPatterns?: boolean | Pattern$libraryPatternsArgs<ExtArgs>
     searchData?: boolean | Pattern$searchDataArgs<ExtArgs>
     _count?: boolean | PatternCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -4156,13 +4139,13 @@ export namespace Prisma {
     objects: {
       tags: Prisma.$PatternTagPayload<ExtArgs>[]
       draftsPatterns: Prisma.$DraftPatternPayload<ExtArgs>[]
-      library: Prisma.$LibraryPatternPayload<ExtArgs>[]
+      libraryPatterns: Prisma.$LibraryPatternPayload<ExtArgs>[]
       searchData: Prisma.$PatternSearchDataPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       signatureBits: number
-      signatureMeasure: $Enums.SignatureMeasure
+      signatureMeasure: number
       beats: Prisma.JsonValue
       createdAt: Date
       updatedAt: Date
@@ -4562,7 +4545,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     tags<T extends Pattern$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Pattern$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PatternTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     draftsPatterns<T extends Pattern$draftsPatternsArgs<ExtArgs> = {}>(args?: Subset<T, Pattern$draftsPatternsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPatternPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    library<T extends Pattern$libraryArgs<ExtArgs> = {}>(args?: Subset<T, Pattern$libraryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryPatternPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    libraryPatterns<T extends Pattern$libraryPatternsArgs<ExtArgs> = {}>(args?: Subset<T, Pattern$libraryPatternsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryPatternPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     searchData<T extends Pattern$searchDataArgs<ExtArgs> = {}>(args?: Subset<T, Pattern$searchDataArgs<ExtArgs>>): Prisma__PatternSearchDataClient<$Result.GetResult<Prisma.$PatternSearchDataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4595,7 +4578,7 @@ export namespace Prisma {
   interface PatternFieldRefs {
     readonly id: FieldRef<"Pattern", 'Int'>
     readonly signatureBits: FieldRef<"Pattern", 'Int'>
-    readonly signatureMeasure: FieldRef<"Pattern", 'SignatureMeasure'>
+    readonly signatureMeasure: FieldRef<"Pattern", 'Int'>
     readonly beats: FieldRef<"Pattern", 'Json'>
     readonly createdAt: FieldRef<"Pattern", 'DateTime'>
     readonly updatedAt: FieldRef<"Pattern", 'DateTime'>
@@ -5035,9 +5018,9 @@ export namespace Prisma {
   }
 
   /**
-   * Pattern.library
+   * Pattern.libraryPatterns
    */
-  export type Pattern$libraryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Pattern$libraryPatternsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the LibraryPattern
      */
@@ -10799,20 +10782,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'SignatureMeasure'
-   */
-  export type EnumSignatureMeasureFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignatureMeasure'>
-    
-
-
-  /**
-   * Reference to a field of type 'SignatureMeasure[]'
-   */
-  export type ListEnumSignatureMeasureFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignatureMeasure[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -10853,7 +10822,7 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     isActive?: BoolFilter<"User"> | boolean
-    library?: LibraryPatternListRelationFilter
+    libraryPatterns?: LibraryPatternListRelationFilter
     drafts?: DraftListRelationFilter
   }
 
@@ -10864,7 +10833,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     isActive?: SortOrder
-    library?: LibraryPatternOrderByRelationAggregateInput
+    libraryPatterns?: LibraryPatternOrderByRelationAggregateInput
     drafts?: DraftOrderByRelationAggregateInput
   }
 
@@ -10878,7 +10847,7 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     isActive?: BoolFilter<"User"> | boolean
-    library?: LibraryPatternListRelationFilter
+    libraryPatterns?: LibraryPatternListRelationFilter
     drafts?: DraftListRelationFilter
   }, "id" | "email">
 
@@ -10961,13 +10930,13 @@ export namespace Prisma {
     NOT?: PatternWhereInput | PatternWhereInput[]
     id?: IntFilter<"Pattern"> | number
     signatureBits?: IntFilter<"Pattern"> | number
-    signatureMeasure?: EnumSignatureMeasureFilter<"Pattern"> | $Enums.SignatureMeasure
+    signatureMeasure?: IntFilter<"Pattern"> | number
     beats?: JsonFilter<"Pattern">
     createdAt?: DateTimeFilter<"Pattern"> | Date | string
     updatedAt?: DateTimeFilter<"Pattern"> | Date | string
     tags?: PatternTagListRelationFilter
     draftsPatterns?: DraftPatternListRelationFilter
-    library?: LibraryPatternListRelationFilter
+    libraryPatterns?: LibraryPatternListRelationFilter
     searchData?: XOR<PatternSearchDataNullableScalarRelationFilter, PatternSearchDataWhereInput> | null
   }
 
@@ -10980,7 +10949,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     tags?: PatternTagOrderByRelationAggregateInput
     draftsPatterns?: DraftPatternOrderByRelationAggregateInput
-    library?: LibraryPatternOrderByRelationAggregateInput
+    libraryPatterns?: LibraryPatternOrderByRelationAggregateInput
     searchData?: PatternSearchDataOrderByWithRelationInput
   }
 
@@ -10990,13 +10959,13 @@ export namespace Prisma {
     OR?: PatternWhereInput[]
     NOT?: PatternWhereInput | PatternWhereInput[]
     signatureBits?: IntFilter<"Pattern"> | number
-    signatureMeasure?: EnumSignatureMeasureFilter<"Pattern"> | $Enums.SignatureMeasure
+    signatureMeasure?: IntFilter<"Pattern"> | number
     beats?: JsonFilter<"Pattern">
     createdAt?: DateTimeFilter<"Pattern"> | Date | string
     updatedAt?: DateTimeFilter<"Pattern"> | Date | string
     tags?: PatternTagListRelationFilter
     draftsPatterns?: DraftPatternListRelationFilter
-    library?: LibraryPatternListRelationFilter
+    libraryPatterns?: LibraryPatternListRelationFilter
     searchData?: XOR<PatternSearchDataNullableScalarRelationFilter, PatternSearchDataWhereInput> | null
   }, "id">
 
@@ -11020,7 +10989,7 @@ export namespace Prisma {
     NOT?: PatternScalarWhereWithAggregatesInput | PatternScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Pattern"> | number
     signatureBits?: IntWithAggregatesFilter<"Pattern"> | number
-    signatureMeasure?: EnumSignatureMeasureWithAggregatesFilter<"Pattern"> | $Enums.SignatureMeasure
+    signatureMeasure?: IntWithAggregatesFilter<"Pattern"> | number
     beats?: JsonWithAggregatesFilter<"Pattern">
     createdAt?: DateTimeWithAggregatesFilter<"Pattern"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Pattern"> | Date | string
@@ -11097,6 +11066,7 @@ export namespace Prisma {
 
   export type LibraryPatternWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    userId_patternId?: LibraryPatternUserIdPatternIdCompoundUniqueInput
     AND?: LibraryPatternWhereInput | LibraryPatternWhereInput[]
     OR?: LibraryPatternWhereInput[]
     NOT?: LibraryPatternWhereInput | LibraryPatternWhereInput[]
@@ -11106,7 +11076,7 @@ export namespace Prisma {
     title?: StringFilter<"LibraryPattern"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     pattern?: XOR<PatternScalarRelationFilter, PatternWhereInput>
-  }, "id">
+  }, "id" | "userId_patternId">
 
   export type LibraryPatternOrderByWithAggregationInput = {
     id?: SortOrder
@@ -11321,7 +11291,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     isActive?: boolean
-    library?: LibraryPatternCreateNestedManyWithoutUserInput
+    libraryPatterns?: LibraryPatternCreateNestedManyWithoutUserInput
     drafts?: DraftCreateNestedManyWithoutUserInput
   }
 
@@ -11332,7 +11302,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     isActive?: boolean
-    library?: LibraryPatternUncheckedCreateNestedManyWithoutUserInput
+    libraryPatterns?: LibraryPatternUncheckedCreateNestedManyWithoutUserInput
     drafts?: DraftUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -11342,7 +11312,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    library?: LibraryPatternUpdateManyWithoutUserNestedInput
+    libraryPatterns?: LibraryPatternUpdateManyWithoutUserNestedInput
     drafts?: DraftUpdateManyWithoutUserNestedInput
   }
 
@@ -11353,7 +11323,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    library?: LibraryPatternUncheckedUpdateManyWithoutUserNestedInput
+    libraryPatterns?: LibraryPatternUncheckedUpdateManyWithoutUserNestedInput
     drafts?: DraftUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -11428,58 +11398,58 @@ export namespace Prisma {
 
   export type PatternCreateInput = {
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: PatternTagCreateNestedManyWithoutPatternInput
     draftsPatterns?: DraftPatternCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternCreateNestedManyWithoutPatternInput
     searchData?: PatternSearchDataCreateNestedOneWithoutPatternInput
   }
 
   export type PatternUncheckedCreateInput = {
     id?: number
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: PatternTagUncheckedCreateNestedManyWithoutPatternInput
     draftsPatterns?: DraftPatternUncheckedCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
     searchData?: PatternSearchDataUncheckedCreateNestedOneWithoutPatternInput
   }
 
   export type PatternUpdateInput = {
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: PatternTagUpdateManyWithoutPatternNestedInput
     draftsPatterns?: DraftPatternUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUpdateManyWithoutPatternNestedInput
     searchData?: PatternSearchDataUpdateOneWithoutPatternNestedInput
   }
 
   export type PatternUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: PatternTagUncheckedUpdateManyWithoutPatternNestedInput
     draftsPatterns?: DraftPatternUncheckedUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
     searchData?: PatternSearchDataUncheckedUpdateOneWithoutPatternNestedInput
   }
 
   export type PatternCreateManyInput = {
     id?: number
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11487,7 +11457,7 @@ export namespace Prisma {
 
   export type PatternUpdateManyMutationInput = {
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11496,7 +11466,7 @@ export namespace Prisma {
   export type PatternUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11539,8 +11509,8 @@ export namespace Prisma {
   export type LibraryPatternCreateInput = {
     isPublic?: boolean
     title: string
-    user: UserCreateNestedOneWithoutLibraryInput
-    pattern: PatternCreateNestedOneWithoutLibraryInput
+    user: UserCreateNestedOneWithoutLibraryPatternsInput
+    pattern: PatternCreateNestedOneWithoutLibraryPatternsInput
   }
 
   export type LibraryPatternUncheckedCreateInput = {
@@ -11554,8 +11524,8 @@ export namespace Prisma {
   export type LibraryPatternUpdateInput = {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     title?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutLibraryNestedInput
-    pattern?: PatternUpdateOneRequiredWithoutLibraryNestedInput
+    user?: UserUpdateOneRequiredWithoutLibraryPatternsNestedInput
+    pattern?: PatternUpdateOneRequiredWithoutLibraryPatternsNestedInput
   }
 
   export type LibraryPatternUncheckedUpdateInput = {
@@ -11944,13 +11914,6 @@ export namespace Prisma {
   export type TagSumOrderByAggregateInput = {
     id?: SortOrder
   }
-
-  export type EnumSignatureMeasureFilter<$PrismaModel = never> = {
-    equals?: $Enums.SignatureMeasure | EnumSignatureMeasureFieldRefInput<$PrismaModel>
-    in?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    not?: NestedEnumSignatureMeasureFilter<$PrismaModel> | $Enums.SignatureMeasure
-  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -12002,6 +11965,7 @@ export namespace Prisma {
   export type PatternAvgOrderByAggregateInput = {
     id?: SortOrder
     signatureBits?: SortOrder
+    signatureMeasure?: SortOrder
   }
 
   export type PatternMaxOrderByAggregateInput = {
@@ -12023,16 +11987,7 @@ export namespace Prisma {
   export type PatternSumOrderByAggregateInput = {
     id?: SortOrder
     signatureBits?: SortOrder
-  }
-
-  export type EnumSignatureMeasureWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SignatureMeasure | EnumSignatureMeasureFieldRefInput<$PrismaModel>
-    in?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    not?: NestedEnumSignatureMeasureWithAggregatesFilter<$PrismaModel> | $Enums.SignatureMeasure
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSignatureMeasureFilter<$PrismaModel>
-    _max?: NestedEnumSignatureMeasureFilter<$PrismaModel>
+    signatureMeasure?: SortOrder
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -12104,6 +12059,11 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type LibraryPatternUserIdPatternIdCompoundUniqueInput = {
+    userId: number
+    patternId: number
   }
 
   export type LibraryPatternCountOrderByAggregateInput = {
@@ -12509,10 +12469,6 @@ export namespace Prisma {
     connect?: PatternSearchDataWhereUniqueInput
   }
 
-  export type EnumSignatureMeasureFieldUpdateOperationsInput = {
-    set?: $Enums.SignatureMeasure
-  }
-
   export type PatternTagUpdateManyWithoutPatternNestedInput = {
     create?: XOR<PatternTagCreateWithoutPatternInput, PatternTagUncheckedCreateWithoutPatternInput> | PatternTagCreateWithoutPatternInput[] | PatternTagUncheckedCreateWithoutPatternInput[]
     connectOrCreate?: PatternTagCreateOrConnectWithoutPatternInput | PatternTagCreateOrConnectWithoutPatternInput[]
@@ -12645,32 +12601,32 @@ export namespace Prisma {
     update?: XOR<XOR<TagUpdateToOneWithWhereWithoutPatternsInput, TagUpdateWithoutPatternsInput>, TagUncheckedUpdateWithoutPatternsInput>
   }
 
-  export type UserCreateNestedOneWithoutLibraryInput = {
-    create?: XOR<UserCreateWithoutLibraryInput, UserUncheckedCreateWithoutLibraryInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLibraryInput
+  export type UserCreateNestedOneWithoutLibraryPatternsInput = {
+    create?: XOR<UserCreateWithoutLibraryPatternsInput, UserUncheckedCreateWithoutLibraryPatternsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLibraryPatternsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type PatternCreateNestedOneWithoutLibraryInput = {
-    create?: XOR<PatternCreateWithoutLibraryInput, PatternUncheckedCreateWithoutLibraryInput>
-    connectOrCreate?: PatternCreateOrConnectWithoutLibraryInput
+  export type PatternCreateNestedOneWithoutLibraryPatternsInput = {
+    create?: XOR<PatternCreateWithoutLibraryPatternsInput, PatternUncheckedCreateWithoutLibraryPatternsInput>
+    connectOrCreate?: PatternCreateOrConnectWithoutLibraryPatternsInput
     connect?: PatternWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutLibraryNestedInput = {
-    create?: XOR<UserCreateWithoutLibraryInput, UserUncheckedCreateWithoutLibraryInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLibraryInput
-    upsert?: UserUpsertWithoutLibraryInput
+  export type UserUpdateOneRequiredWithoutLibraryPatternsNestedInput = {
+    create?: XOR<UserCreateWithoutLibraryPatternsInput, UserUncheckedCreateWithoutLibraryPatternsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLibraryPatternsInput
+    upsert?: UserUpsertWithoutLibraryPatternsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLibraryInput, UserUpdateWithoutLibraryInput>, UserUncheckedUpdateWithoutLibraryInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLibraryPatternsInput, UserUpdateWithoutLibraryPatternsInput>, UserUncheckedUpdateWithoutLibraryPatternsInput>
   }
 
-  export type PatternUpdateOneRequiredWithoutLibraryNestedInput = {
-    create?: XOR<PatternCreateWithoutLibraryInput, PatternUncheckedCreateWithoutLibraryInput>
-    connectOrCreate?: PatternCreateOrConnectWithoutLibraryInput
-    upsert?: PatternUpsertWithoutLibraryInput
+  export type PatternUpdateOneRequiredWithoutLibraryPatternsNestedInput = {
+    create?: XOR<PatternCreateWithoutLibraryPatternsInput, PatternUncheckedCreateWithoutLibraryPatternsInput>
+    connectOrCreate?: PatternCreateOrConnectWithoutLibraryPatternsInput
+    upsert?: PatternUpsertWithoutLibraryPatternsInput
     connect?: PatternWhereUniqueInput
-    update?: XOR<XOR<PatternUpdateToOneWithWhereWithoutLibraryInput, PatternUpdateWithoutLibraryInput>, PatternUncheckedUpdateWithoutLibraryInput>
+    update?: XOR<XOR<PatternUpdateToOneWithWhereWithoutLibraryPatternsInput, PatternUpdateWithoutLibraryPatternsInput>, PatternUncheckedUpdateWithoutLibraryPatternsInput>
   }
 
   export type UserCreateNestedOneWithoutDraftsInput = {
@@ -12899,23 +12855,6 @@ export namespace Prisma {
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
   }
-
-  export type NestedEnumSignatureMeasureFilter<$PrismaModel = never> = {
-    equals?: $Enums.SignatureMeasure | EnumSignatureMeasureFieldRefInput<$PrismaModel>
-    in?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    not?: NestedEnumSignatureMeasureFilter<$PrismaModel> | $Enums.SignatureMeasure
-  }
-
-  export type NestedEnumSignatureMeasureWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SignatureMeasure | EnumSignatureMeasureFieldRefInput<$PrismaModel>
-    in?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SignatureMeasure[] | ListEnumSignatureMeasureFieldRefInput<$PrismaModel>
-    not?: NestedEnumSignatureMeasureWithAggregatesFilter<$PrismaModel> | $Enums.SignatureMeasure
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSignatureMeasureFilter<$PrismaModel>
-    _max?: NestedEnumSignatureMeasureFilter<$PrismaModel>
-  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -12985,7 +12924,7 @@ export namespace Prisma {
   export type LibraryPatternCreateWithoutUserInput = {
     isPublic?: boolean
     title: string
-    pattern: PatternCreateNestedOneWithoutLibraryInput
+    pattern: PatternCreateNestedOneWithoutLibraryPatternsInput
   }
 
   export type LibraryPatternUncheckedCreateWithoutUserInput = {
@@ -13179,7 +13118,7 @@ export namespace Prisma {
   export type LibraryPatternCreateWithoutPatternInput = {
     isPublic?: boolean
     title: string
-    user: UserCreateNestedOneWithoutLibraryInput
+    user: UserCreateNestedOneWithoutLibraryPatternsInput
   }
 
   export type LibraryPatternUncheckedCreateWithoutPatternInput = {
@@ -13296,24 +13235,24 @@ export namespace Prisma {
 
   export type PatternCreateWithoutTagsInput = {
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     draftsPatterns?: DraftPatternCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternCreateNestedManyWithoutPatternInput
     searchData?: PatternSearchDataCreateNestedOneWithoutPatternInput
   }
 
   export type PatternUncheckedCreateWithoutTagsInput = {
     id?: number
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     draftsPatterns?: DraftPatternUncheckedCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
     searchData?: PatternSearchDataUncheckedCreateNestedOneWithoutPatternInput
   }
 
@@ -13351,24 +13290,24 @@ export namespace Prisma {
 
   export type PatternUpdateWithoutTagsInput = {
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     draftsPatterns?: DraftPatternUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUpdateManyWithoutPatternNestedInput
     searchData?: PatternSearchDataUpdateOneWithoutPatternNestedInput
   }
 
   export type PatternUncheckedUpdateWithoutTagsInput = {
     id?: IntFieldUpdateOperationsInput | number
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     draftsPatterns?: DraftPatternUncheckedUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
     searchData?: PatternSearchDataUncheckedUpdateOneWithoutPatternNestedInput
   }
 
@@ -13394,7 +13333,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCreateWithoutLibraryInput = {
+  export type UserCreateWithoutLibraryPatternsInput = {
     email: string
     password: string
     name: string
@@ -13403,7 +13342,7 @@ export namespace Prisma {
     drafts?: DraftCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutLibraryInput = {
+  export type UserUncheckedCreateWithoutLibraryPatternsInput = {
     id?: number
     email: string
     password: string
@@ -13413,14 +13352,14 @@ export namespace Prisma {
     drafts?: DraftUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutLibraryInput = {
+  export type UserCreateOrConnectWithoutLibraryPatternsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutLibraryInput, UserUncheckedCreateWithoutLibraryInput>
+    create: XOR<UserCreateWithoutLibraryPatternsInput, UserUncheckedCreateWithoutLibraryPatternsInput>
   }
 
-  export type PatternCreateWithoutLibraryInput = {
+  export type PatternCreateWithoutLibraryPatternsInput = {
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13429,10 +13368,10 @@ export namespace Prisma {
     searchData?: PatternSearchDataCreateNestedOneWithoutPatternInput
   }
 
-  export type PatternUncheckedCreateWithoutLibraryInput = {
+  export type PatternUncheckedCreateWithoutLibraryPatternsInput = {
     id?: number
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13441,23 +13380,23 @@ export namespace Prisma {
     searchData?: PatternSearchDataUncheckedCreateNestedOneWithoutPatternInput
   }
 
-  export type PatternCreateOrConnectWithoutLibraryInput = {
+  export type PatternCreateOrConnectWithoutLibraryPatternsInput = {
     where: PatternWhereUniqueInput
-    create: XOR<PatternCreateWithoutLibraryInput, PatternUncheckedCreateWithoutLibraryInput>
+    create: XOR<PatternCreateWithoutLibraryPatternsInput, PatternUncheckedCreateWithoutLibraryPatternsInput>
   }
 
-  export type UserUpsertWithoutLibraryInput = {
-    update: XOR<UserUpdateWithoutLibraryInput, UserUncheckedUpdateWithoutLibraryInput>
-    create: XOR<UserCreateWithoutLibraryInput, UserUncheckedCreateWithoutLibraryInput>
+  export type UserUpsertWithoutLibraryPatternsInput = {
+    update: XOR<UserUpdateWithoutLibraryPatternsInput, UserUncheckedUpdateWithoutLibraryPatternsInput>
+    create: XOR<UserCreateWithoutLibraryPatternsInput, UserUncheckedCreateWithoutLibraryPatternsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutLibraryInput = {
+  export type UserUpdateToOneWithWhereWithoutLibraryPatternsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutLibraryInput, UserUncheckedUpdateWithoutLibraryInput>
+    data: XOR<UserUpdateWithoutLibraryPatternsInput, UserUncheckedUpdateWithoutLibraryPatternsInput>
   }
 
-  export type UserUpdateWithoutLibraryInput = {
+  export type UserUpdateWithoutLibraryPatternsInput = {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -13466,7 +13405,7 @@ export namespace Prisma {
     drafts?: DraftUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutLibraryInput = {
+  export type UserUncheckedUpdateWithoutLibraryPatternsInput = {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -13476,20 +13415,20 @@ export namespace Prisma {
     drafts?: DraftUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type PatternUpsertWithoutLibraryInput = {
-    update: XOR<PatternUpdateWithoutLibraryInput, PatternUncheckedUpdateWithoutLibraryInput>
-    create: XOR<PatternCreateWithoutLibraryInput, PatternUncheckedCreateWithoutLibraryInput>
+  export type PatternUpsertWithoutLibraryPatternsInput = {
+    update: XOR<PatternUpdateWithoutLibraryPatternsInput, PatternUncheckedUpdateWithoutLibraryPatternsInput>
+    create: XOR<PatternCreateWithoutLibraryPatternsInput, PatternUncheckedCreateWithoutLibraryPatternsInput>
     where?: PatternWhereInput
   }
 
-  export type PatternUpdateToOneWithWhereWithoutLibraryInput = {
+  export type PatternUpdateToOneWithWhereWithoutLibraryPatternsInput = {
     where?: PatternWhereInput
-    data: XOR<PatternUpdateWithoutLibraryInput, PatternUncheckedUpdateWithoutLibraryInput>
+    data: XOR<PatternUpdateWithoutLibraryPatternsInput, PatternUncheckedUpdateWithoutLibraryPatternsInput>
   }
 
-  export type PatternUpdateWithoutLibraryInput = {
+  export type PatternUpdateWithoutLibraryPatternsInput = {
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13498,10 +13437,10 @@ export namespace Prisma {
     searchData?: PatternSearchDataUpdateOneWithoutPatternNestedInput
   }
 
-  export type PatternUncheckedUpdateWithoutLibraryInput = {
+  export type PatternUncheckedUpdateWithoutLibraryPatternsInput = {
     id?: IntFieldUpdateOperationsInput | number
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13516,7 +13455,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     isActive?: boolean
-    library?: LibraryPatternCreateNestedManyWithoutUserInput
+    libraryPatterns?: LibraryPatternCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDraftsInput = {
@@ -13526,7 +13465,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     isActive?: boolean
-    library?: LibraryPatternUncheckedCreateNestedManyWithoutUserInput
+    libraryPatterns?: LibraryPatternUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDraftsInput = {
@@ -13574,7 +13513,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    library?: LibraryPatternUpdateManyWithoutUserNestedInput
+    libraryPatterns?: LibraryPatternUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDraftsInput = {
@@ -13584,7 +13523,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    library?: LibraryPatternUncheckedUpdateManyWithoutUserNestedInput
+    libraryPatterns?: LibraryPatternUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DraftPatternUpsertWithWhereUniqueWithoutDraftInput = {
@@ -13631,24 +13570,24 @@ export namespace Prisma {
 
   export type PatternCreateWithoutDraftsPatternsInput = {
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: PatternTagCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternCreateNestedManyWithoutPatternInput
     searchData?: PatternSearchDataCreateNestedOneWithoutPatternInput
   }
 
   export type PatternUncheckedCreateWithoutDraftsPatternsInput = {
     id?: number
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: PatternTagUncheckedCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
     searchData?: PatternSearchDataUncheckedCreateNestedOneWithoutPatternInput
   }
 
@@ -13702,48 +13641,48 @@ export namespace Prisma {
 
   export type PatternUpdateWithoutDraftsPatternsInput = {
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: PatternTagUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUpdateManyWithoutPatternNestedInput
     searchData?: PatternSearchDataUpdateOneWithoutPatternNestedInput
   }
 
   export type PatternUncheckedUpdateWithoutDraftsPatternsInput = {
     id?: IntFieldUpdateOperationsInput | number
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: PatternTagUncheckedUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
     searchData?: PatternSearchDataUncheckedUpdateOneWithoutPatternNestedInput
   }
 
   export type PatternCreateWithoutSearchDataInput = {
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: PatternTagCreateNestedManyWithoutPatternInput
     draftsPatterns?: DraftPatternCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternCreateNestedManyWithoutPatternInput
   }
 
   export type PatternUncheckedCreateWithoutSearchDataInput = {
     id?: number
     signatureBits?: number
-    signatureMeasure?: $Enums.SignatureMeasure
+    signatureMeasure?: number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     tags?: PatternTagUncheckedCreateNestedManyWithoutPatternInput
     draftsPatterns?: DraftPatternUncheckedCreateNestedManyWithoutPatternInput
-    library?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
+    libraryPatterns?: LibraryPatternUncheckedCreateNestedManyWithoutPatternInput
   }
 
   export type PatternCreateOrConnectWithoutSearchDataInput = {
@@ -13764,25 +13703,25 @@ export namespace Prisma {
 
   export type PatternUpdateWithoutSearchDataInput = {
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: PatternTagUpdateManyWithoutPatternNestedInput
     draftsPatterns?: DraftPatternUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUpdateManyWithoutPatternNestedInput
   }
 
   export type PatternUncheckedUpdateWithoutSearchDataInput = {
     id?: IntFieldUpdateOperationsInput | number
     signatureBits?: IntFieldUpdateOperationsInput | number
-    signatureMeasure?: EnumSignatureMeasureFieldUpdateOperationsInput | $Enums.SignatureMeasure
+    signatureMeasure?: IntFieldUpdateOperationsInput | number
     beats?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: PatternTagUncheckedUpdateManyWithoutPatternNestedInput
     draftsPatterns?: DraftPatternUncheckedUpdateManyWithoutPatternNestedInput
-    library?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
+    libraryPatterns?: LibraryPatternUncheckedUpdateManyWithoutPatternNestedInput
   }
 
   export type LibraryPatternCreateManyUserInput = {
@@ -13805,7 +13744,7 @@ export namespace Prisma {
   export type LibraryPatternUpdateWithoutUserInput = {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     title?: StringFieldUpdateOperationsInput | string
-    pattern?: PatternUpdateOneRequiredWithoutLibraryNestedInput
+    pattern?: PatternUpdateOneRequiredWithoutLibraryPatternsNestedInput
   }
 
   export type LibraryPatternUncheckedUpdateWithoutUserInput = {
@@ -13922,7 +13861,7 @@ export namespace Prisma {
   export type LibraryPatternUpdateWithoutPatternInput = {
     isPublic?: BoolFieldUpdateOperationsInput | boolean
     title?: StringFieldUpdateOperationsInput | string
-    user?: UserUpdateOneRequiredWithoutLibraryNestedInput
+    user?: UserUpdateOneRequiredWithoutLibraryPatternsNestedInput
   }
 
   export type LibraryPatternUncheckedUpdateWithoutPatternInput = {

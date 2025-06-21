@@ -206,14 +206,7 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.SignatureMeasure = exports.$Enums.SignatureMeasure = {
-  ONE: 'ONE',
-  TWO: 'TWO',
-  FOUR: 'FOUR',
-  EIGHT: 'EIGHT',
-  SIXTEEN: 'SIXTEEN',
-  THIRTY_TWO: 'THIRTY_TWO'
-};
+
 
 exports.Prisma.ModelName = {
   User: 'User',

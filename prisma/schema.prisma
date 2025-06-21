@@ -9,25 +9,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum SignatureMeasure {
-  ONE        @map("1")
-  TWO        @map("2")
-  FOUR       @map("4")
-  EIGHT      @map("8")
-  SIXTEEN    @map("16")
-  THIRTY_TWO @map("32")
-}
-
 // Таблица пользователей
 model User {
-  id        Int              @id @default(autoincrement())
-  email     String           @unique @db.VarChar(320)
-  password  String           @db.VarChar(128)
-  name      String           @db.VarChar(35)
-  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz
-  isActive  Boolean          @default(true) @map("is_active")
-  library   LibraryPattern[]
-  drafts    Draft[]
+  id              Int              @id @default(autoincrement())
+  email           String           @unique @db.VarChar(320)
+  password        String           @db.VarChar(128)
+  name            String           @db.VarChar(35)
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  isActive        Boolean          @default(true) @map("is_active")
+  libraryPatterns LibraryPattern[]
+  drafts          Draft[]
 
   @@map("users")
 }
@@ -46,13 +37,13 @@ model Tag {
 model Pattern {
   id               Int                @id @default(autoincrement())
   signatureBits    Int                @default(4) @map("signature_bits") @db.SmallInt
-  signatureMeasure SignatureMeasure   @default(FOUR) @map("signature_measure")
+  signatureMeasure Int                @default(4) @map("signature_measure") @db.SmallInt
   beats            Json               @default("[]")
   createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz
   updatedAt        DateTime           @default(now()) @map("updated_at") @db.Timestamptz
   tags             PatternTag[]
   draftsPatterns   DraftPattern[]
-  library          LibraryPattern[]
+  libraryPatterns  LibraryPattern[]
   searchData       PatternSearchData?
 
   @@index([beats], type: Gin)
@@ -70,7 +61,7 @@ model PatternTag {
   @@map("patterns_tags")
 }
 
-// Таблица библиотеки паттернов
+// Таблица ритмов в библиотеке пользователя
 model LibraryPattern {
   id        Int     @id @default(autoincrement())
   userId    Int     @map("user_id")
@@ -80,6 +71,7 @@ model LibraryPattern {
   user      User    @relation(fields: [userId], references: [id], onDelete: Restrict)
   pattern   Pattern @relation(fields: [patternId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, patternId])
   @@map("library_patterns")
 }
 
